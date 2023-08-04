@@ -29,10 +29,10 @@ def load_tel():
     return s
 
 def input_tel(s):
-    first_name = input("Введите имя: ")
-    patronimic = input("Введите отчество: ")
-    last_name = input("Введите фамилию: ")
-    tel = input("Введите номер телефона: ")
+    first_name = input("Введите имя: ").capitalize()
+    patronimic = input("Введите отчество: ").capitalize()
+    last_name = input("Введите фамилию: ").capitalize()
+    tel = input("Введите номер телефона: ").capitalize()
     with open(file_name, "a", encoding="UTF-8") as f:
         f.write(f"{last_name} {first_name} {patronimic} {tel} \n")
     s.append([last_name, first_name, patronimic, tel])
@@ -57,6 +57,22 @@ def change_tel(s, object, data, new_data):
                 line[3] = new_data
             else:
                 print("Напишите цифру от 1 до 4 из пункта меню.")
+    return "Запись не найдена"
+
+def delete_tel(s, object, delete_data):
+    for line in s:
+        if object in line or object.capitalize() in line:
+            if delete_data==1:
+                line.remove(line[1])
+            elif delete_data==2:
+                line.remove(line[2])
+            elif delete_data==3:
+                line.remove(line[0])
+            elif delete_data==4:
+                line.remove(line[3])
+            else:
+                print("Напишите цифру от 1 до 4 из пункта меню.")
+    return "Запись не найдена"
 
 def show_tell(s):
     for line in s:
@@ -66,7 +82,7 @@ def show_tell(s):
 if __name__ == "__main__":
     s = load_tel()
     while True:
-        action = input("1 - Добавить данные \n2 - Искать данные \n3 - Посмотреть справочник\n4 - Изменить запись\n5 - Выход:\n")
+        action = input("1 - Добавить данные \n2 - Искать данные \n3 - Посмотреть справочник\n4 - Изменить запись\n5 - Удалить данные в записи\n6 - Выход:\n")
         if action == "1":
             s = input_tel(s)
         elif action == "2":
@@ -80,6 +96,10 @@ if __name__ == "__main__":
             new_data = input("Введите новые данные: ")
             change_tel(s, search_name, data, new_data)
         elif action == "5":
+            delete_name = input("В какой записи Вы хотите удалить данные? ")
+            delete_object = int(input("Какие данные Вы хотите удалить?\n1 - Имя\n2 - Отчество\n3 - Фамилия\n4 - Номер телефона\n"))
+            delete_tel(s, delete_name, delete_object)
+        elif action == "6":
             print("Good bye!")
             break
         else:
